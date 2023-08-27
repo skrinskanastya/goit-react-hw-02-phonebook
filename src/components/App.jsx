@@ -19,11 +19,13 @@ export class App extends Component {
     }));
   };
   findContact = nameToFind => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(
-        contact => contact.name === nameToFind
-      ),
-    }));
+    this.setState({ filter: nameToFind });
+  };
+  getFilteredContacts = ({ contacts, filter }) => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
   };
 
   render() {
@@ -34,7 +36,7 @@ export class App extends Component {
         <ContactForm contacts={contacts} onUpdate={this.updateContacts} />
         <Filter filter={this.state.filter} onSearch={this.findContact} />
         <ContactsList
-          contacts={this.state.contacts}
+          filteredContacts={this.getFilteredContacts}
           onDelete={this.deleteContact}
         />
       </div>
