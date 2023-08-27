@@ -8,12 +8,16 @@ export class App extends Component {
   state = {
     contacts: [],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  updateContacts = newContacts => {
-    this.setState({ contacts: newContacts });
+  updateContacts = newContact => {
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContact],
+    }));
+    if (this.state.contacts.some(contact => contact.name === newContact.name)) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
+    }
   };
   deleteContact = contactId => {
     this.setState(prevState => ({
@@ -32,11 +36,10 @@ export class App extends Component {
   };
 
   render() {
-    const { contacts } = this.state;
     return (
       <Layout>
         <h1>Phonebook</h1>
-        <ContactForm contacts={contacts} onUpdate={this.updateContacts} />
+        <ContactForm onUpdate={this.updateContacts} />
         <h2>Contacts</h2>
         <Filter filter={this.state.filter} onSearch={this.findContact} />
         <ContactsList

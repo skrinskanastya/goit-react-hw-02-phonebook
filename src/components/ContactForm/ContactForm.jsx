@@ -15,19 +15,14 @@ const ContactsSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export const ContactForm = ({ contacts, onUpdate }) => {
+export const ContactForm = ({ onUpdate }) => {
   const handleAddContact = (values, actions) => {
-    if (contacts.some(contact => contact.name === values.name)) {
-      alert(`${values.name} is already in contacts.`);
-      return;
-    }
     const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
     };
-    const newContacts = [...contacts, newContact];
-    onUpdate(newContacts);
+    onUpdate(newContact);
     actions.resetForm();
   };
 
