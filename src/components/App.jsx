@@ -1,7 +1,9 @@
-import { ContactForm } from './ContactForm';
+import { ContactForm } from './ContactForm/ContactForm';
 import { Component } from 'react';
 import { Filter } from './Filter';
-import { ContactsList } from './ContactsList';
+import { ContactsList } from './ContactsList/ContactsList';
+import { Layout } from './Layout';
+
 export class App extends Component {
   state = {
     contacts: [],
@@ -21,7 +23,8 @@ export class App extends Component {
   findContact = nameToFind => {
     this.setState({ filter: nameToFind });
   };
-  getFilteredContacts = ({ contacts, filter }) => {
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
@@ -31,15 +34,16 @@ export class App extends Component {
   render() {
     const { contacts } = this.state;
     return (
-      <div>
+      <Layout>
         <h1>Phonebook</h1>
         <ContactForm contacts={contacts} onUpdate={this.updateContacts} />
+        <h2>Contacts</h2>
         <Filter filter={this.state.filter} onSearch={this.findContact} />
         <ContactsList
-          filteredContacts={this.getFilteredContacts}
+          filteredContacts={this.getFilteredContacts()}
           onDelete={this.deleteContact}
         />
-      </div>
+      </Layout>
     );
   }
 }

@@ -1,6 +1,7 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field } from 'formik';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
+import { StyledForm, StyledBtn, ErrorMsg } from './ContactForm.styled';
 
 const ContactsSchema = Yup.object().shape({
   name: Yup.string()
@@ -16,6 +17,10 @@ const ContactsSchema = Yup.object().shape({
 
 export const ContactForm = ({ contacts, onUpdate }) => {
   const handleAddContact = (values, actions) => {
+    if (contacts.some(contact => contact.name === values.name)) {
+      alert(`${values.name} is already in contacts.`);
+      return;
+    }
     const newContact = {
       id: nanoid(),
       name: values.name,
@@ -35,15 +40,15 @@ export const ContactForm = ({ contacts, onUpdate }) => {
       validationSchema={ContactsSchema}
       onSubmit={handleAddContact}
     >
-      <Form>
+      <StyledForm>
         <label htmlFor="name">Name</label>
         <Field type="text" id="name" name="name" />
-        <ErrorMessage name="name" />
-        <label htmlFor="phone">Phone</label>
+        <ErrorMsg name="name" component={'div'} />
+        <label htmlFor="phone">Number</label>
         <Field type="tel" id="phone" name="number" />
-        <ErrorMessage name="number" />
-        <button type="submit">Add contact</button>
-      </Form>
+        <ErrorMsg name="number" component={'div'} />
+        <StyledBtn type="submit">Add contact</StyledBtn>
+      </StyledForm>
     </Formik>
   );
 };
