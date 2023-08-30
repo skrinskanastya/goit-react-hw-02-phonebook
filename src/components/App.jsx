@@ -11,13 +11,13 @@ export class App extends Component {
   };
 
   updateContacts = newContact => {
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
     if (this.state.contacts.some(contact => contact.name === newContact.name)) {
       alert(`${newContact.name} is already in contacts.`);
       return;
     }
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContact],
+    }));
   };
   deleteContact = contactId => {
     this.setState(prevState => ({
